@@ -12,4 +12,13 @@ Create Read Update and Delete framework using JS
 - [ ] UI/UX considerations (how are we going to use this)
 
 ### Advanced Reqs
-- [ ] Item that I added goes here...
+- [ ] Allow User to sort the data (categorical/ alphabetical by name/ address)
+- [ ] Allow User to import images from computer 
+- [ ] Incorporate Animation to display data
+- [ ] Take care of cards which lacks data to be sorted
+- [ ] How to let users choose how they want their data to be formatted / displayed
+- [ ] How to capture the most looked at business cards
+- [ ] How to handle resizing from desktop to mobile
+- [ ] How to let user customize the business card design
+- [ ] How to let users make default certain cards as important
+- [ ] How to allow user to create own business cards for others to use
