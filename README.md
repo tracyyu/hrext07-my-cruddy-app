@@ -1,6 +1,8 @@
 # hrext07-my-cruddy-app
 Create Read Update and Delete framework using JS
-
+Project is a business card organizer to allow user to add, update, and delete business cards they have received. 
+And added animation & stylistics to allow user to choose
+how they want to view their business cards
 
 ## Tasks
 
