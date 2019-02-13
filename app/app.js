@@ -145,7 +145,7 @@ $(document).ready(function(){
 
   var createDataSummary = function(dataObj){
     // Summary Card
-    var $summaryDiv = $(`<div class="display-data-summary" data-name=${dataObj['name']} data-time-created=${dataObj['time-created']} data-time-accessed=${dataObj['time-accessed']}></div>`);
+    var $summaryDiv = $(`<div class="display-data-summary" data-name="${dataObj['name']}" data-time-created=${dataObj['time-created']} data-time-accessed=${dataObj['time-accessed']}></div>`);
     var $summaryDataDiv = $(`<p class="data-summary">${dataObj['name']} | ${dataObj['company-name']} <br> ${dataObj['work-phone']}</p>`);
     var $editButtons = $('<div class="data-summary-edits"><i class="material-icons edit">create</i> <i class="material-icons delete">clear</i></div>');
 
@@ -155,8 +155,8 @@ $(document).ready(function(){
   };
 
   var createDataCard = function(dataObj){
-    // Entire card
-    var $outerDiv = $(`<div class="display-data-item" data-name=${dataObj['name']} data-time-created=${dataObj['time-created']} data-time-accessed=${dataObj['time-accessed']}></div>`);
+     // Entire card
+    var $outerDiv = $(`<div class="display-data-item" data-name="${dataObj['name']}" data-time-created=${dataObj['time-created']} data-time-accessed=${dataObj['time-accessed']}></div>`);
     var $cardDiv = $('<div class="display-data-card"></div>');
     var $personDiv = $(`<div class="card-person"><p class="card-full-name">${dataObj['name']}</p><p class="card-job-title">${dataObj['job-title']}</p></div><hr>`);
     var $companyDiv = $(`<div class="card-company"><p class="card-company-name">${dataObj['company-name']}</p><p class="card-company-description">${dataObj['company-description']}</p><p class="card-company-address">${dataObj['company-address']}</p></div>`);
@@ -168,25 +168,80 @@ $(document).ready(function(){
     $cardDiv.append($personDiv, $companyDiv, $contactDiv, $socialLink, $category, $notes);
     $outerDiv.append($cardDiv);
 
-    $('.container-data').append($outerDiv);
+    return $outerDiv;
+  }
 
-    $outerDiv.css('display', 'none');    
+  var addDataCard = function(dataObj){
+   
+    var $card = createDataCard(dataObj);
 
+    $('.container-data').append($card);
+
+    if(!$('.toggle-switch').is(':checked')){
+      $card.css('display', 'none'); 
+    }   
   };
 
-  var displayAllData = function(){
-    var allData = JSON.parse(localStorage.getItem('all-data'));
-    allData.forEach((item) => {
+
+  var createRolodexCard = function(dataObj, i){
+    //Entire rolodex card
+    var length = localStorage.length;
+    var $defaultCardDiv = $(`<div class="default-card" id="card-${i}" data-name="${dataObj['name']}" data-time-created=${dataObj['time-created']} data-time-accessed=${dataObj['time-accessed']}></div>`);
+    var $backCardDiv = $('<div class="back"></div>');
+    var $frontCardDiv = $('<div class="front"></div>');
+    var $ribbonCardDiv = $('<div class="ribbon"></div>');
+
+    var $card = createDataCard(dataObj);
+
+    $frontCardDiv.append($ribbonCardDiv, $card);
+            
+    $defaultCardDiv.append($frontCardDiv, $backCardDiv);
+
+    $('.container-rolodex .base').before($defaultCardDiv);
+  }
+
+  var displayAllData = function(dataArray){
+    var allData = dataArray || JSON.parse(localStorage.getItem('all-data'));
+    allData.forEach((item, i) => {
       if(item !== null){
         createDataSummary(item);
-        createDataCard(item);
+        addDataCard(item);
+        createRolodexCard(item,i+1);
       }
     });
   };
 
-  var filterData = function(){
+  var filterData = function(filterType){
+    // filter by category
+    var allData = JSON.parse(localStorage.getItem('all-data'));
 
   };
+
+  var sortData = function(sortType){
+    var allData = JSON.parse(localStorage.getItem('all-data'));
+    // sort alphabetically by name ascending order
+    // sort by company name by ascending order
+    // sort by time created
+    if(sortType === 'name'){
+      return allData.sort(function(a, b){
+        if(a['name'].toLowerCase() < b['name'].toLowerCase()) { return -1; }
+        if(a['name'].toLowerCase() > b['name'].toLowerCase()) { return 1; }
+        return 0;
+      });
+    }else if(sortType === 'company'){
+      return allData.sort(function(a, b){
+        if(a['company-name'].toLowerCase() < b['company-name'].toLowerCase()) { return -1; }
+        if(a['company-name'].toLowerCase() > b['company-name'].toLowerCase()) { return 1; }
+        return 0;
+      });
+    }else if(sortType === 'recently-added'){
+      return allData.sort(function(a, b){
+        return a['time-created'] - b['time-created'];
+      });
+    }else{
+      return allData;
+    }
+  }
 
   displayAllData();
 
@@ -233,7 +288,7 @@ $(document).ready(function(){
     toggleDisplay($form);
   });
 
-  // Add item as long as satisfy requirements
+  // Add item as long as satisfy requirements through the form
   $('.btn-add').on('click', function(e){
     e.preventDefault();
 
@@ -262,6 +317,9 @@ $(document).ready(function(){
       // Entire card
       createDataCard(dataObj);
 
+      // Add to rolodex 
+      createRolodexCard(dataObj, localStorage.length);
+
       clearFormFields();
 
       $('.container-form').css('display', 'none')
@@ -271,13 +329,15 @@ $(document).ready(function(){
 
 
   // update db
-  $('.container-data').on('click', '.edit', function(e){
+  $('.container-data').on('click', '.data-summary-edits .edit', function(e){
     var keyData = e.target.parentElement.parentElement.dataset.name;
+    console.log(keyData);
 
     var $form = $('.container-form');
     toggleDisplay($form);
 
     var obj = JSON.parse(localStorage.getItem(keyData));
+    console.log(obj);
 
     $('#input-name').val(obj['name']);
     $('#input-job-title').val(obj['job-title']);
@@ -309,7 +369,7 @@ $(document).ready(function(){
 
   });
 
-  // update item
+  // update item through the form
   $('.btn-update').click(function(e){
     e.preventDefault();
 
@@ -349,7 +409,28 @@ $(document).ready(function(){
 
 
 
-  // Rolodex
+
+/******************************************/
+/*              INDEX   -- FILTER         */
+/******************************************/
+
+// Get the selected filters
+  $('.btn-add-filter').on('click', function(e){
+    e.preventDefault();
+
+    var sortValue = $('input[name=radio]:checked').val();
+
+    let sortedData = sortData(sortValue);
+    $('.container-data').empty();
+    displayAllData(sortedData);
+
+  });
+
+
+/******************************************/
+/*                ROLODEX                 */
+/******************************************/
+
   var showing = 1;
   var prev;
   var next;

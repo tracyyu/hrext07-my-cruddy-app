@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>HREXT07 R00lz!</title>
+  <script
+          src="https://code.jquery.com/jquery-3.3.1.js"
+          integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+          crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore-min.js"></script>
+  <script src="app/app.js"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" type="text/css" href="reset.css">
+  <link rel="stylesheet" href="css/style.css">
+
+
+  <!--
+
+√ create container
+√ create button
+√ input field
+√ container to display text
+√ update button(or maybe click on the container item)
+√ delete button
+container for the response-feedback (start with alert)
+-->
+</head>
+<body>
+  <div class="rolodex">
+    <div id="prev-controller" class="controllers">
+      <span><i class="large material-icons prev">arrow_downward</i></span>
+    </div>
+    <div id="bind">
+      <div id="bind1"></div>
+      <div id="bind2"></div>
+    </div>
+    <div id="next-controller" class="controllers">
+      <span><i class="large material-icons next">arrow_upward</i></span>
+    </div>
+  </div>
+
+  <div class="default-card" id="card-1">
+    <div class="front">
+      <div class="ribbon"></div>
+      <div id="my-info">
+        <h2>John Doe</h2>
+        <span>Web developer</span>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magnam non, eveniet totam similique temporibus.</p>
+      </div>
+    </div>
+    <div class="back"></div>
+  </div>
+
+  <div class="default-card" id="card-2">
+    <div class="front">
+      <div class="ribbon"></div>
+      <h2>My portfolio</h2>
+      <div id="portfolio-imgs">
+        <div>
+          <a target="_blank" href="http://pixelarity.com/identity"><img src="http://pixelarity.com/items/thumbnails/identity.jpg" /></a>
+          <a target="_blank" href="http://pixelarity.com/lens"><img src="http://pixelarity.com/items/thumbnails/lens.jpg" /></a>
+          <a target="_blank" href="http://pixelarity.com/fractal"><img src="http://pixelarity.com/items/thumbnails/fractal.jpg" /></a>
+          <br />
+          <a target="_blank" href="http://pixelarity.com/slate"><img src="http://pixelarity.com/items/thumbnails/slate.jpg" /></a>
+          <a target="_blank" href="http://pixelarity.com/magnetic"><img src="http://pixelarity.com/items/thumbnails/magnetic.jpg" /></a>
+          <a target="_blank" href="http://pixelarity.com/locus"><img src="http://pixelarity.com/items/thumbnails/locus.jpg" /></a>
+        </div>
+
+        <div>
+          <a target="_blank" href="http://pixelarity.com/cogent"><img src="http://pixelarity.com/items/thumbnails/cogent.jpg" /></a>
+          <a target="_blank" href="http://pixelarity.com/spectral"><img src="http://pixelarity.com/items/thumbnails/spectral.jpg" /></a>
+          <a target="_blank" href="http://pixelarity.com/optics"><img src="http://pixelarity.com/items/thumbnails/optics.jpg" /></a>
+          <br />
+          <a target="_blank" href="http://pixelarity.com/exponent"><img src="http://pixelarity.com/items/thumbnails/exponent.jpg" /></a>
+          <a target="_blank" href="http://pixelarity.com/archetype"><img src="http://pixelarity.com/items/thumbnails/archetype.jpg" /></a>
+          <a target="_blank" href="http://pixelarity.com/photon"><img src="http://pixelarity.com/items/thumbnails/photon.jpg" /></a>
+        </div>
+      </div>
+
+      <div id="port-prev" class="port-ctrl fa">&#xf053;</div>
+      <div id="port-next" class="port-ctrl fa">&#xf054;</div>
+    </div>
+    <div class="back"></div>
+  </div>
+
+<div class="default-card" id="card-3">
+  <div class="front">
+    <div class="ribbon"></div>
+    <h2>Contact me!</h2>
+    <form>
+      <label for="name">Your name:<input type="text" name="name" id="name" placeholder="What's your name?" /></label>
+      <label for="subject">Subject:<input type="text" name="subject" id="subject" placeholder="Here we go!" /></label>
+      <label for="text">Subject:<textarea placeholder="Remember, be nice!" name="text" rows="1" id="text"></textarea></label>
+      <button>Send!</button>
+    </form>
+  </div>
+  <div class="back"></div>
+</div>
+
+
+  <div class="default-card base">
+  </div>
+</body>
+</html>

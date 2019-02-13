@@ -452,6 +452,7 @@ input[type=text]:focus, textarea:focus{
 
 .filter-nav .menu li {
 	padding: 10px;
+	font-size: 14px;
 }
 
 .filter-nav .menu li p {
@@ -459,7 +460,14 @@ input[type=text]:focus, textarea:focus{
 	margin-bottom: 10px;
 }
 
-.filter-nav .menu li input[type=checkbox]{
+.filter-nav .menu .radio-sort{
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	flex-wrap: wrap;
+}
+
+.filter-nav .menu li input[type=radio], .filter-nav .menu li input[type=checkbox]{
 	padding: 10px;
 	margin: 10px;
 	font-size: 14px;
@@ -655,7 +663,7 @@ input.invalid, textarea.invalid{
 	border-radius: 10px;
 }
 
-.btn-add{
+.btn-add, .btn-add-filter{
 	background-color: #ef819a;
 }
 
@@ -663,11 +671,11 @@ input.invalid, textarea.invalid{
 	background-color: #45d3e0;
 }
 
-.btn-clear {
+.btn-clear, .btn-clear-filter {
 	background-color: red;
 }
 
-.btn-add, .btn-update, .btn-clear{
+.btn-add, .btn-update, .btn-clear, .btn-add-filter, .btn-clear-filter{
 	cursor: pointer;
 	border: 1px solid white;
 	border-radius: 10px;
@@ -768,7 +776,7 @@ input:checked + .slider:before {
 
 .display-data-item{
 	width: 650px;
-	height: 340px;
+	min-height: 300;
 	margin: auto;
 	margin-bottom: 20px;
 	background-color: white;
@@ -807,7 +815,7 @@ input:checked + .slider:before {
 
 .card, .card-person, 
 .card-company, .card-contact, 
-.card-social, .card-notes{
+.card-social, .card-notes, .card-category{
 	text-align: center;
 }
 
@@ -820,11 +828,11 @@ input:checked + .slider:before {
 .card-job-title, .card-company-description,
 .card-company-address{
 	margin-top: 8px;
-	font-size: 18px;
+	font-size: 17px;
 }
 
 .card-company-name{
-	font-size: 22px;
+	font-size: 21px;
 	font-weight: 600;
 }
 
@@ -837,7 +845,7 @@ input:checked + .slider:before {
 }
 
 .card-social,
-.card-notes{
+.card-notes, .card-category{
 	margin-top: 20px;
 	font-size: 16px;
 }

@@ -49,11 +49,15 @@ container for the response-feedback (start with alert)
           <ul class="menu">
             <li>
               <p>Sort By:</p>
-              <div>
-                <input type="checkbox" id="name" name="name">
-                <label for="name">Name</label>
-                <input type="checkbox" id="company" name="company">
-                <label for="company">Company</label>
+              <div class="radio-sort">
+                  <input type="radio" id="none-radio" name="radio" value="none">
+                  <label for="none-radio">None</label>
+                  <input type="radio" id="name-radio" name="radio" value="name">
+                  <label for="name-radio">Name</label>
+                  <input type="radio" id="company-radio" name="radio" value="company">
+                  <label for="company-radio">Company</label>
+                  <input type="radio" id="time-radio" name="radio" value="time">
+                  <label for="time-radio">Recently Added</label>
               </div>
             </li>
             <li>
@@ -90,8 +94,8 @@ container for the response-feedback (start with alert)
               </div>
             </li>
           </ul>
-          <button class="btn-add"><span>Submit</span></button>
-          <button class="btn-clear"><span>Clear</span></button>
+          <button class="btn-add-filter"><span>Submit</span></button>
+          <button class="btn-clear-filter"><span>Clear</span></button>
           <button class="menu-close" aria-label="close menu"><i class="material-icons">clear</i></button>
         </div>
 
@@ -190,65 +194,6 @@ container for the response-feedback (start with alert)
             <span><i class="large material-icons next">arrow_upward</i></span>
           </div>
         </div>
-
-        <div class="default-card" id="card-1">
-          <div class="front">
-            <div class="ribbon"></div>
-            <div id="my-info">
-              <h2>John Doe</h2>
-              <span>Web developer</span>
-              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magnam non, eveniet totam similique temporibus.</p>
-            </div>
-          </div>
-          <div class="back"></div>
-        </div>
-
-        <div class="default-card" id="card-2">
-          <div class="front">
-            <div class="ribbon"></div>
-            <h2>My portfolio</h2>
-            <div id="portfolio-imgs">
-              <div>
-                <a target="_blank" href="http://pixelarity.com/identity"><img src="http://pixelarity.com/items/thumbnails/identity.jpg" /></a>
-                <a target="_blank" href="http://pixelarity.com/lens"><img src="http://pixelarity.com/items/thumbnails/lens.jpg" /></a>
-                <a target="_blank" href="http://pixelarity.com/fractal"><img src="http://pixelarity.com/items/thumbnails/fractal.jpg" /></a>
-                <br />
-                <a target="_blank" href="http://pixelarity.com/slate"><img src="http://pixelarity.com/items/thumbnails/slate.jpg" /></a>
-                <a target="_blank" href="http://pixelarity.com/magnetic"><img src="http://pixelarity.com/items/thumbnails/magnetic.jpg" /></a>
-                <a target="_blank" href="http://pixelarity.com/locus"><img src="http://pixelarity.com/items/thumbnails/locus.jpg" /></a>
-              </div>
-
-              <div>
-                <a target="_blank" href="http://pixelarity.com/cogent"><img src="http://pixelarity.com/items/thumbnails/cogent.jpg" /></a>
-                <a target="_blank" href="http://pixelarity.com/spectral"><img src="http://pixelarity.com/items/thumbnails/spectral.jpg" /></a>
-                <a target="_blank" href="http://pixelarity.com/optics"><img src="http://pixelarity.com/items/thumbnails/optics.jpg" /></a>
-                <br />
-                <a target="_blank" href="http://pixelarity.com/exponent"><img src="http://pixelarity.com/items/thumbnails/exponent.jpg" /></a>
-                <a target="_blank" href="http://pixelarity.com/archetype"><img src="http://pixelarity.com/items/thumbnails/archetype.jpg" /></a>
-                <a target="_blank" href="http://pixelarity.com/photon"><img src="http://pixelarity.com/items/thumbnails/photon.jpg" /></a>
-              </div>
-            </div>
-
-            <div id="port-prev" class="port-ctrl fa">&#xf053;</div>
-            <div id="port-next" class="port-ctrl fa">&#xf054;</div>
-          </div>
-          <div class="back"></div>
-        </div>
-
-        <div class="default-card" id="card-3">
-          <div class="front">
-            <div class="ribbon"></div>
-            <h2>Contact me!</h2>
-            <form>
-              <label for="name">Your name:<input type="text" name="name" id="name" placeholder="What's your name?" /></label>
-              <label for="subject">Subject:<input type="text" name="subject" id="subject" placeholder="Here we go!" /></label>
-              <label for="text">Subject:<textarea placeholder="Remember, be nice!" name="text" rows="1" id="text"></textarea></label>
-              <button>Send!</button>
-            </form>
-          </div>
-          <div class="back"></div>
-        </div>
-
         <div class="default-card base"></div>
       </div>
 
