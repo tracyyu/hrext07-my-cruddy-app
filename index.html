@@ -25,159 +25,234 @@
 container for the response-feedback (start with alert)
 -->
 </head>
-<body>
+  <body>
 
-<div class="container-main">
-  <header>
-      <h1>BIZZ <br> CARD.</h1>
-      <div class="add-card">
-        <a class="create-button"><span>Add New Contact / Business</span></a>
+    <div class="container-main">
+      <header>
+          <h1>BIZZ <br> CARD.</h1>
+          <div class="add-card">
+            <a class="create-button"><span>Add New Contact / Business</span></a>
+          </div>
+          <div class="toggle-switch-display">
+            <label class="left-label">List</label>
+            <label class="switch">
+              <input type="checkbox" class="toggle-switch" data-list='list' data-rolodex='rolodex'>
+              <span class="slider round"></span>
+            </label>
+            <label class="right-label">Rolodex</label>
+          </div>
+      </header>
+
+
+      <nav class="filter-nav">
+        <div class="menu-wrapper">
+          <ul class="menu">
+            <li>
+              <p>Sort By:</p>
+              <div>
+                <input type="checkbox" id="name" name="name">
+                <label for="name">Name</label>
+                <input type="checkbox" id="company" name="company">
+                <label for="company">Company</label>
+              </div>
+            </li>
+            <li>
+              <p>Choose Category:</p>
+              <div>
+                <select id="input-category">
+                  <option value="">--Please choose an option--</option>
+                  <option value="homerepair">Home Repair</option>
+                  <option value="techrepair">Tech Repair</option>
+                  <option value="finance">Finance</option>
+                  <option value="medical">Medical</option>
+                  <option value="retailservice">Retail Service</option>
+                  <option value="academics">Academics</option>
+                  <option value="food">Food</option>
+                  <option value="food">Arts</option>
+                </select>
+              </div>
+            </li>
+            <li>
+              <p>Filter By Distance: (miles)</p>
+              <div class="checkbox-distance">
+                <div class="checkboxes">
+                  <input type="checkbox" id="short-distance" name="short-distance">
+                  <label for="short-distance">0 - 15</label>
+                </div>
+                <div class="checkboxes">
+                  <input type="checkbox" id="medium-distance" name="medium-distance">
+                  <label for="medium-distance">15 - 25</label>
+                </div>
+                <div class="checkboxes">
+                  <input type="checkbox" id="far-distance" name="far-distance">
+                  <label for="far-distance">25 - 50</label>
+                </div>
+              </div>
+            </li>
+          </ul>
+          <button class="btn-add"><span>Submit</span></button>
+          <button class="btn-clear"><span>Clear</span></button>
+          <button class="menu-close" aria-label="close menu"><i class="material-icons">clear</i></button>
+        </div>
+
+        <div class="fixed-menu">
+          <button class="menu-open" aria-label="open menu">
+            <div class="menu-icon"><svg viewBox="0 0 20 20" width="20" height="20"><title>Menu</title><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"></path></svg></div>
+          <div class="menu-text screen-reader-text">Filter</div>
+          </button>
+        </div>
+      </nav>
+
+      <div class="container-form">
+        <form class="card-form">
+          <button class="btn-close"><i class="material-icons">clear</i></button>
+          <h3>New Business Card</h3>
+          <hr>
+          <div class="business-card-info">
+            <div class="left-panel">
+              <label for="input-name">Full Name:</label>
+              <input type="text" name="input-name" id="input-name" placeholder="Full Name">
+
+              <label for="input-person-title">Job Title:</label>
+              <input type="text" name="input-job-title" id="input-person-title" placeholder="Job Title">
+
+              <label for="input-company-name">Company Name:</label>
+              <input type="text" id="input-company-name" placeholder="Company Name">
+              <label for="input-company-description">Company Description:</label>
+              <input type="text" id="input-company-description" placeholder="Company Description">
+              <label for="input-company-address">Company Address:</label>
+              <input type="text" id="input-company-address" placeholder="Address, City, State, Zip">
+            </div>
+
+            <div class="right-panel">
+              <label for="input-work-phone">Work Phone:</label>
+              <input type="text" id="input-work-phone" placeholder="Work Phone">
+
+              <label for="input-personal-phone">Personal Phone:</label>
+              <input type="text" id="input-personal-phone" placeholder="Personal Phone">
+
+              <label for="input-fax-phone">Fax Phone:</label>
+              <input type="text" id="input-fax-phone" placeholder="Fax Number">
+
+
+              <label for="input-email">Email:</label>
+              <input type="text" id="input-email" placeholder="Email@domain.com">
+
+              <label for="input-social">Social Link:</label>
+              <input type="text" id="input-social" placeholder="www.websiteurl.com"> 
+            </div>
+          </div>
+          
+          <hr>
+
+          <div class="additional-panel">
+            <div class="category-option">
+              <label for="input-category">Category:</label>
+              <select id="input-category">
+                <option value="">--Please choose an option--</option>
+                <option value="homerepair">Home Repair</option>
+                <option value="techrepair">Tech Repair</option>
+                <option value="finance">Finance</option>
+                <option value="medical">Medical</option>
+                <option value="retailservice">Retail Service</option>
+                <option value="academics">Academics</option>
+                <option value="food">Food</option>
+                <option value="food">Arts</option>
+              </select>
+            </div>
+
+            <div class="notes-text">
+              <label for="input-notes">Notes:</label>
+              <textarea name="input-notes" id="input-notes"></textarea>
+              </div>
+          </div>
+
+          <button class="btn-add"><span>Submit</span></button>
+          <button class="btn-update"><span>Update</span></button>
+          <button class="btn-clear"><span>Clear</span></button>
+        </form>
       </div>
-      <div class="toggle-switch-display">
-        <label class="left-label">List</label>
-        <label class="switch">
-          <input type="checkbox" data-list='list' data-rolodex='rolodex'>
-          <span class="slider round"></span>
-        </label>
-        <label class="right-label">Rolodex</label>
+
+      <div class="container-data">
+
       </div>
-  </header>
 
+      <div class="container-rolodex">
+        <div class="rolodex">
+          <div id="prev-controller" class="controllers">
+            <span><i class="large material-icons prev">arrow_downward</i></span>
+          </div>
+          <div id="bind">
+            <div id="bind1"></div>
+            <div id="bind2"></div>
+          </div>
+          <div id="next-controller" class="controllers">
+            <span><i class="large material-icons next">arrow_upward</i></span>
+          </div>
+        </div>
 
-  <nav class="filter-nav">
-    <div class="menu-wrapper">
-      <ul class="menu">
-        <li>
-          <p>Sort By:</p>
-          <div>
-            <input type="checkbox" id="name" name="name">
-            <label for="name">Name</label>
-            <input type="checkbox" id="company" name="company">
-            <label for="company">Company</label>
-          </div>
-        </li>
-        <li>
-          <p>Choose Category:</p>
-          <div>
-            <select id="input-category">
-              <option value="">--Please choose an option--</option>
-              <option value="homerepair">Home Repair</option>
-              <option value="techrepair">Tech Repair</option>
-              <option value="finance">Finance</option>
-              <option value="medical">Medical</option>
-              <option value="retailservice">Retail Service</option>
-              <option value="academics">Academics</option>
-              <option value="food">Food</option>
-              <option value="food">Arts</option>
-            </select>
-          </div>
-        </li>
-        <li>
-          <p>Filter By Distance: (miles)</p>
-          <div class="checkbox-distance">
-            <div class="checkboxes">
-              <input type="checkbox" id="short-distance" name="short-distance">
-              <label for="short-distance">0 - 15</label>
-            </div>
-            <div class="checkboxes">
-              <input type="checkbox" id="medium-distance" name="medium-distance">
-              <label for="medium-distance">15 - 25</label>
-            </div>
-            <div class="checkboxes">
-              <input type="checkbox" id="far-distance" name="far-distance">
-              <label for="far-distance">25 - 50</label>
+        <div class="default-card" id="card-1">
+          <div class="front">
+            <div class="ribbon"></div>
+            <div id="my-info">
+              <h2>John Doe</h2>
+              <span>Web developer</span>
+              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magnam non, eveniet totam similique temporibus.</p>
             </div>
           </div>
-        </li>
-      </ul>
-      <button class="btn-add"><span>Submit</span></button>
-      <button class="btn-clear"><span>Clear</span></button>
-      <button class="menu-close" aria-label="close menu"><i class="material-icons">clear</i></button>
+          <div class="back"></div>
+        </div>
+
+        <div class="default-card" id="card-2">
+          <div class="front">
+            <div class="ribbon"></div>
+            <h2>My portfolio</h2>
+            <div id="portfolio-imgs">
+              <div>
+                <a target="_blank" href="http://pixelarity.com/identity"><img src="http://pixelarity.com/items/thumbnails/identity.jpg" /></a>
+                <a target="_blank" href="http://pixelarity.com/lens"><img src="http://pixelarity.com/items/thumbnails/lens.jpg" /></a>
+                <a target="_blank" href="http://pixelarity.com/fractal"><img src="http://pixelarity.com/items/thumbnails/fractal.jpg" /></a>
+                <br />
+                <a target="_blank" href="http://pixelarity.com/slate"><img src="http://pixelarity.com/items/thumbnails/slate.jpg" /></a>
+                <a target="_blank" href="http://pixelarity.com/magnetic"><img src="http://pixelarity.com/items/thumbnails/magnetic.jpg" /></a>
+                <a target="_blank" href="http://pixelarity.com/locus"><img src="http://pixelarity.com/items/thumbnails/locus.jpg" /></a>
+              </div>
+
+              <div>
+                <a target="_blank" href="http://pixelarity.com/cogent"><img src="http://pixelarity.com/items/thumbnails/cogent.jpg" /></a>
+                <a target="_blank" href="http://pixelarity.com/spectral"><img src="http://pixelarity.com/items/thumbnails/spectral.jpg" /></a>
+                <a target="_blank" href="http://pixelarity.com/optics"><img src="http://pixelarity.com/items/thumbnails/optics.jpg" /></a>
+                <br />
+                <a target="_blank" href="http://pixelarity.com/exponent"><img src="http://pixelarity.com/items/thumbnails/exponent.jpg" /></a>
+                <a target="_blank" href="http://pixelarity.com/archetype"><img src="http://pixelarity.com/items/thumbnails/archetype.jpg" /></a>
+                <a target="_blank" href="http://pixelarity.com/photon"><img src="http://pixelarity.com/items/thumbnails/photon.jpg" /></a>
+              </div>
+            </div>
+
+            <div id="port-prev" class="port-ctrl fa">&#xf053;</div>
+            <div id="port-next" class="port-ctrl fa">&#xf054;</div>
+          </div>
+          <div class="back"></div>
+        </div>
+
+        <div class="default-card" id="card-3">
+          <div class="front">
+            <div class="ribbon"></div>
+            <h2>Contact me!</h2>
+            <form>
+              <label for="name">Your name:<input type="text" name="name" id="name" placeholder="What's your name?" /></label>
+              <label for="subject">Subject:<input type="text" name="subject" id="subject" placeholder="Here we go!" /></label>
+              <label for="text">Subject:<textarea placeholder="Remember, be nice!" name="text" rows="1" id="text"></textarea></label>
+              <button>Send!</button>
+            </form>
+          </div>
+          <div class="back"></div>
+        </div>
+
+        <div class="default-card base"></div>
+      </div>
+
     </div>
 
-    <div class="fixed-menu">
-      <button class="menu-open" aria-label="open menu">
-        <div class="menu-icon"><svg viewBox="0 0 20 20" width="20" height="20"><title>Menu</title><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"></path></svg></div>
-      <div class="menu-text screen-reader-text">Filter</div>
-      </button>
-    </div>
-  </nav>
-
-  <div class="container-form">
-    <form class="card-form">
-      <button class="btn-close"><i class="material-icons">clear</i></button>
-      <h3>New Business Card</h3>
-      <hr>
-      <div class="business-card-info">
-        <div class="left-panel">
-          <label for="input-name">Full Name:</label>
-          <input type="text" name="input-name" id="input-name" placeholder="Full Name">
-
-          <label for="input-person-title">Job Title:</label>
-          <input type="text" name="input-job-title" id="input-person-title" placeholder="Job Title">
-
-          <label for="input-company-name">Company Name:</label>
-          <input type="text" id="input-company-name" placeholder="Company Name">
-          <label for="input-company-description">Company Description:</label>
-          <input type="text" id="input-company-description" placeholder="Company Description">
-          <label for="input-company-address">Company Address:</label>
-          <input type="text" id="input-company-address" placeholder="Address, City, State, Zip">
-        </div>
-
-        <div class="right-panel">
-          <label for="input-work-phone">Work Phone:</label>
-          <input type="text" id="input-work-phone" placeholder="Work Phone">
-
-          <label for="input-personal-phone">Personal Phone:</label>
-          <input type="text" id="input-personal-phone" placeholder="Personal Phone">
-
-          <label for="input-fax-phone">Fax Phone:</label>
-          <input type="text" id="input-fax-phone" placeholder="Fax Number">
-
-
-          <label for="input-email">Email:</label>
-          <input type="text" id="input-email" placeholder="Email@domain.com">
-
-          <label for="input-social">Social Link:</label>
-          <input type="text" id="input-social" placeholder="www.websiteurl.com"> 
-        </div>
-      </div>
-      
-      <hr>
-
-      <div class="additional-panel">
-        <div class="category-option">
-          <label for="input-category">Category:</label>
-          <select id="input-category">
-            <option value="">--Please choose an option--</option>
-            <option value="homerepair">Home Repair</option>
-            <option value="techrepair">Tech Repair</option>
-            <option value="finance">Finance</option>
-            <option value="medical">Medical</option>
-            <option value="retailservice">Retail Service</option>
-            <option value="academics">Academics</option>
-            <option value="food">Food</option>
-            <option value="food">Arts</option>
-          </select>
-        </div>
-
-        <div class="notes-text">
-          <label for="input-notes">Notes:</label>
-          <textarea name="input-notes" id="input-notes"></textarea>
-          </div>
-      </div>
-
-      <button class="btn-add"><span>Submit</span></button>
-      <button class="btn-update"><span>Update</span></button>
-      <button class="btn-clear"><span>Clear</span></button>
-    </form>
-  </div>
-
-  <div class="container-data">
-
-  </div>
-
-</div>
-
-</body>
+  </body>
 </html>

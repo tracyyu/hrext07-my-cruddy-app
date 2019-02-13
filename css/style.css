@@ -473,6 +473,7 @@ input[type=text]:focus, textarea:focus{
 	transform: translateX(60px);
 	transition: transform 0.3s;
     width: 300px;
+    z-index: 4;
 }
 
 .filter-nav .is-opened .menu {
@@ -505,6 +506,7 @@ input[type=text]:focus, textarea:focus{
     background: #a7e0e5;
     border-radius: 5px;
     box-shadow: -4px 4px 24px rgba(0, 0, 0, 0.3);
+    z-index: 5;
 }
 
 .filter-nav .fixed-menu .menu-open {
@@ -595,6 +597,7 @@ input[type=text]:focus, textarea:focus{
 	display: none;
   	justify-content: center;
   	align-items: center;
+  	z-index: 5;
 }
 
 .business-card-info{
@@ -844,6 +847,10 @@ input:checked + .slider:before {
 /*	       ROLODEX -- CARDS               */
 /******************************************/
 
+.container-rolodex{
+	display: none;
+}
+
 .rolodex{
 	position: absolute;
 	width:700px;
@@ -857,7 +864,7 @@ input:checked + .slider:before {
 	position: absolute;
     height: 135px;
     width: 180px;
-    top: calc(50% - 67px);
+    top: calc(50% - 20px);
     cursor: pointer;
 }
 
@@ -875,6 +882,7 @@ input:checked + .slider:before {
 	 font-size: 80px;
 	 font-weight: 1000;
 	 text-shadow: 1px 1px 3px grey;
+	 color: white;
 }
 
 .prev:active, .next:active {
@@ -889,13 +897,13 @@ input:checked + .slider:before {
 	height: 40px;
 	background-color: black;
 	border-radius: 5px;
-	top: calc(50% + 80px);
+	top: calc(50% + 110px);
   	left: calc(50% - 420px);
 }
 
 #bind1, #bind2{
 	position: absolute;
-	z-index: 5;
+	z-index: 4;
 	width: 70px;
 	height: 35px;
 	top: calc(50% - 20px);
@@ -933,7 +941,7 @@ input:checked + .slider:before {
   
   width: 600px;
   height: 320px;
-  bottom: calc(50% - 40px);
+  bottom: calc(50% - 65px);
   left: calc(50% - 300px);
   border-radius: 10px;
   
