@@ -9,6 +9,8 @@
           crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore-min.js"></script>
   <script src="app/app.js"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" type="text/css" href="reset.css">
   <link rel="stylesheet" href="css/style.css">
 
 
@@ -26,16 +28,155 @@ container for the response-feedback (start with alert)
 <body>
 
 <div class="container-main">
-  <header>My Cruddy App</header>
+  <header>
+      <h1>BIZZ <br> CARD.</h1>
+      <div class="add-card">
+        <a class="create-button"><span>Add New Contact / Business</span></a>
+      </div>
+      <div class="toggle-switch-display">
+        <label class="left-label">List</label>
+        <label class="switch">
+          <input type="checkbox" data-list='list' data-rolodex='rolodex'>
+          <span class="slider round"></span>
+        </label>
+        <label class="right-label">Rolodex</label>
+      </div>
+  </header>
+
+
+  <nav class="filter-nav">
+    <div class="menu-wrapper">
+      <ul class="menu">
+        <li>
+          <p>Sort By:</p>
+          <div>
+            <input type="checkbox" id="name" name="name">
+            <label for="name">Name</label>
+            <input type="checkbox" id="company" name="company">
+            <label for="company">Company</label>
+          </div>
+        </li>
+        <li>
+          <p>Choose Category:</p>
+          <div>
+            <select id="input-category">
+              <option value="">--Please choose an option--</option>
+              <option value="homerepair">Home Repair</option>
+              <option value="techrepair">Tech Repair</option>
+              <option value="finance">Finance</option>
+              <option value="medical">Medical</option>
+              <option value="retailservice">Retail Service</option>
+              <option value="academics">Academics</option>
+              <option value="food">Food</option>
+              <option value="food">Arts</option>
+            </select>
+          </div>
+        </li>
+        <li>
+          <p>Filter By Distance: (miles)</p>
+          <div class="checkbox-distance">
+            <div class="checkboxes">
+              <input type="checkbox" id="short-distance" name="short-distance">
+              <label for="short-distance">0 - 15</label>
+            </div>
+            <div class="checkboxes">
+              <input type="checkbox" id="medium-distance" name="medium-distance">
+              <label for="medium-distance">15 - 25</label>
+            </div>
+            <div class="checkboxes">
+              <input type="checkbox" id="far-distance" name="far-distance">
+              <label for="far-distance">25 - 50</label>
+            </div>
+          </div>
+        </li>
+      </ul>
+      <button class="btn-add"><span>Submit</span></button>
+      <button class="btn-clear"><span>Clear</span></button>
+      <button class="menu-close" aria-label="close menu"><i class="material-icons">clear</i></button>
+    </div>
+
+    <div class="fixed-menu">
+      <button class="menu-open" aria-label="open menu">
+        <div class="menu-icon"><svg viewBox="0 0 20 20" width="20" height="20"><title>Menu</title><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"></path></svg></div>
+      <div class="menu-text screen-reader-text">Filter</div>
+      </button>
+    </div>
+  </nav>
+
   <div class="container-form">
-    <input type="text" class="input-key" placeholder="enter key">
-    <input type="text" class="input-value" placeholder="enter value">
-    <button class="btn-add">Submit</button>
-    <button class="btn-update">Update</button>
-    <button class="btn-delete">Delete</button>
-    <button class="btn-clear">Clear</button>
+    <form class="card-form">
+      <button class="btn-close"><i class="material-icons">clear</i></button>
+      <h3>New Business Card</h3>
+      <hr>
+      <div class="business-card-info">
+        <div class="left-panel">
+          <label for="input-name">Full Name:</label>
+          <input type="text" name="input-name" id="input-name" placeholder="Full Name">
+
+          <label for="input-person-title">Job Title:</label>
+          <input type="text" name="input-job-title" id="input-person-title" placeholder="Job Title">
+
+          <label for="input-company-name">Company Name:</label>
+          <input type="text" id="input-company-name" placeholder="Company Name">
+          <label for="input-company-description">Company Description:</label>
+          <input type="text" id="input-company-description" placeholder="Company Description">
+          <label for="input-company-address">Company Address:</label>
+          <input type="text" id="input-company-address" placeholder="Address, City, State, Zip">
+        </div>
+
+        <div class="right-panel">
+          <label for="input-work-phone">Work Phone:</label>
+          <input type="text" id="input-work-phone" placeholder="Work Phone">
+
+          <label for="input-personal-phone">Personal Phone:</label>
+          <input type="text" id="input-personal-phone" placeholder="Personal Phone">
+
+          <label for="input-fax-phone">Fax Phone:</label>
+          <input type="text" id="input-fax-phone" placeholder="Fax Number">
+
+
+          <label for="input-email">Email:</label>
+          <input type="text" id="input-email" placeholder="Email@domain.com">
+
+          <label for="input-social">Social Link:</label>
+          <input type="text" id="input-social" placeholder="www.websiteurl.com"> 
+        </div>
+      </div>
+      
+      <hr>
+
+      <div class="additional-panel">
+        <div class="category-option">
+          <label for="input-category">Category:</label>
+          <select id="input-category">
+            <option value="">--Please choose an option--</option>
+            <option value="homerepair">Home Repair</option>
+            <option value="techrepair">Tech Repair</option>
+            <option value="finance">Finance</option>
+            <option value="medical">Medical</option>
+            <option value="retailservice">Retail Service</option>
+            <option value="academics">Academics</option>
+            <option value="food">Food</option>
+            <option value="food">Arts</option>
+          </select>
+        </div>
+
+        <div class="notes-text">
+          <label for="input-notes">Notes:</label>
+          <textarea name="input-notes" id="input-notes"></textarea>
+          </div>
+      </div>
+
+      <button class="btn-add"><span>Submit</span></button>
+      <button class="btn-update"><span>Update</span></button>
+      <button class="btn-clear"><span>Clear</span></button>
+    </form>
   </div>
-  <div class="container-data"></div>
+
+  <div class="container-data">
+
+  </div>
+
 </div>
 
 </body>
