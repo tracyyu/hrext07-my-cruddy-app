@@ -8,6 +8,13 @@ interact with localstorage
 $(document).ready(function(){
   // this is where we jquery
 
+  // create a storage for a sorted array
+  if(!localStorage.getItem('all-data')){
+    localStorage.setItem('all-data', JSON.stringify([]));
+  }
+
+
+  // toggle filter menu
   var toggleMenu = function(){
     var menuOpen = $('.filter-nav .menu-open');
     var menuClose = $('.filter-nav .menu-close');
@@ -27,6 +34,24 @@ $(document).ready(function(){
   }
 
   toggleMenu();
+
+
+  // toggle between list and rolodex display
+  $('.toggle-switch').on('change', function(){
+    var isChecked = $(this).is(':checked');
+    if(!isChecked){
+      // will display list
+      console.log($('.toggle-switch')[0].dataset['list']);
+      $('.container-data').css('display', 'block');
+      $('.container-rolodex').css('display', 'none');
+    }else{
+      // will display rolodex
+      console.log($('.toggle-switch')[0].dataset['rolodex']);
+      $('.container-data').css('display', 'none');
+      $('.container-rolodex').css('display', 'block');
+    }
+
+  });
 
   var toggleDisplay = function(div){
     if(div.css('display') == 'flex'){
@@ -65,6 +90,10 @@ $(document).ready(function(){
   var createUpdateObj = function(){
     var obj = {};
 
+    var timeData = $.now();
+    obj['time-created'] = obj['time-created'] || timeData;
+    obj['time-accessed'] = timeData;
+
     var nameData = $('#input-name').val() || '';
     obj['name'] = nameData.trim();
 
@@ -101,14 +130,22 @@ $(document).ready(function(){
     var notes = $('#input-notes').val() || '';
     obj['notes'] = notes.trim();
 
+    // add data into localStorage
     localStorage.setItem(nameData, JSON.stringify(obj));
+
+    //now add it to the key: all-data
+    var allData = JSON.parse(localStorage.getItem('all-data'));
+    console.log(allData);
+    allData.push(obj);
+  
+    localStorage.setItem('all-data', JSON.stringify(allData));
 
     return obj;
   };
 
   var createDataSummary = function(dataObj){
     // Summary Card
-    var $summaryDiv = $(`<div class="display-data-summary" data-name=${dataObj['name']}></div>`);
+    var $summaryDiv = $(`<div class="display-data-summary" data-name=${dataObj['name']} data-time-created=${dataObj['time-created']} data-time-accessed=${dataObj['time-accessed']}></div>`);
     var $summaryDataDiv = $(`<p class="data-summary">${dataObj['name']} | ${dataObj['company-name']} <br> ${dataObj['work-phone']}</p>`);
     var $editButtons = $('<div class="data-summary-edits"><i class="material-icons edit">create</i> <i class="material-icons delete">clear</i></div>');
 
@@ -119,7 +156,7 @@ $(document).ready(function(){
 
   var createDataCard = function(dataObj){
     // Entire card
-    var $outerDiv = $(`<div class="display-data-item" data-name=${dataObj['name']}></div>`);
+    var $outerDiv = $(`<div class="display-data-item" data-name=${dataObj['name']} data-time-created=${dataObj['time-created']} data-time-accessed=${dataObj['time-accessed']}></div>`);
     var $cardDiv = $('<div class="display-data-card"></div>');
     var $personDiv = $(`<div class="card-person"><p class="card-full-name">${dataObj['name']}</p><p class="card-job-title">${dataObj['job-title']}</p></div><hr>`);
     var $companyDiv = $(`<div class="card-company"><p class="card-company-name">${dataObj['company-name']}</p><p class="card-company-description">${dataObj['company-description']}</p><p class="card-company-address">${dataObj['company-address']}</p></div>`);
@@ -138,13 +175,17 @@ $(document).ready(function(){
   };
 
   var displayAllData = function(){
-    for(var k in localStorage){
-      var obj = JSON.parse(localStorage.getItem(k));
-      if(obj !== null){
-        createDataSummary(obj);
-        createDataCard(obj);
+    var allData = JSON.parse(localStorage.getItem('all-data'));
+    allData.forEach((item) => {
+      if(item !== null){
+        createDataSummary(item);
+        createDataCard(item);
       }
-    }
+    });
+  };
+
+  var filterData = function(){
+
   };
 
   displayAllData();
@@ -185,14 +226,14 @@ $(document).ready(function(){
     toggleDisplay($(name));
   });
 
-
+  // closes the form element
   $('.btn-close').on('click', function(e){
     e.preventDefault();
     var $form = $('.container-form');
     toggleDisplay($form);
   });
 
-
+  // Add item as long as satisfy requirements
   $('.btn-add').on('click', function(e){
     e.preventDefault();
 
@@ -301,13 +342,10 @@ $(document).ready(function(){
 
   })
 
-  // delete all?
+  // Clear Form 
   $('.btn-clear').click(function(){
     clearFormFields();
   });
-
-
-
 
 
 
@@ -331,7 +369,7 @@ $(document).ready(function(){
   // Rotate: 12deg to -135deg.
   setNextPrev();
   $('#card-' + showing).show().css({zIndex: '2'});
-  $('#card-' + prev).css({ zIndex: '1', transform: 'perspective(1000px) rotateX(-120deg)' }).show();
+  $('#card-' + prev).css({ zIndex: '1', transform: 'perspective(1500px) rotateX(-120deg)' }).show();
   
   $('#prev-controller').click(function() {
     showing--;
@@ -339,14 +377,14 @@ $(document).ready(function(){
       showing = total-1;
     setNextPrev();
     
-    $('#card-' + prev).css({ zIndex: '1', transform: 'perspective(1000px) rotateX(-120deg)' }).show();
+    $('#card-' + prev).css({ zIndex: '1', transform: 'perspective(1500px) rotateX(-120deg)' }).show();
     $('#card-' + showing)
       .show()
       .css({ zIndex: 2 })
       .animate(
       { zIndex: 137 },
       { duration: 500,
-        step: function(now, fx) { $(this).css({ transform: 'perspective(1000px) rotateX(' + (-135+now-2) + 'deg)' }); },
+        step: function(now, fx) { $(this).css({ transform: 'perspective(1500px) rotateX(' + (-135+now-2) + 'deg)' }); },
         complete: function() {
           $(this)
             .css({ zIndex: '0' });
@@ -358,14 +396,14 @@ $(document).ready(function(){
   $('#next-controller').click(function() {
     setNextPrev();
     
-    $('#card-' + next).css({zIndex: '1', transform: 'perspective(1000px) rotateX(0deg)'}).show();
+    $('#card-' + next).css({zIndex: '1', transform: 'perspective(1500px) rotateX(0deg)'}).show();
     
     $('#card-' + showing)
       .css({ zIndex: 12 })
       .animate(
       { zIndex: 147 },
       { duration: 500,
-        step: function(now, fx) { $(this).css({ transform: 'perspective(1000px) rotateX(-' + (now-27) + 'deg)' }); },
+        step: function(now, fx) { $(this).css({ transform: 'perspective(1500px) rotateX(-' + (now-27) + 'deg)' }); },
         complete: function() {
           $(this)
             .css({ zIndex: '1' });
