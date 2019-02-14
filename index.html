@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>HREXT07 R00lz!</title>
   <script
           src="https://code.jquery.com/jquery-3.3.1.js"
@@ -12,8 +13,6 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <link rel="stylesheet" type="text/css" href="reset.css">
   <link rel="stylesheet" href="css/style.css">
-
-
   <!--
 
 √ create container
@@ -48,6 +47,9 @@ container for the response-feedback (start with alert)
         <div class="menu-wrapper">
           <ul class="menu">
             <li>
+              <input type="text" id="search_bar" class="search_bar"  placeholder="Search for keyword..">
+            </li>
+            <li>
               <p>Sort By:</p>
               <div class="radio-sort">
                   <input type="radio" id="none-radio" name="radio" value="none">
@@ -63,8 +65,8 @@ container for the response-feedback (start with alert)
             <li>
               <p>Choose Category:</p>
               <div>
-                <select id="input-category">
-                  <option value="">--Please choose an option--</option>
+                <select id="filter-category">
+                  <option value="">All</option>
                   <option value="homerepair">Home Repair</option>
                   <option value="techrepair">Tech Repair</option>
                   <option value="finance">Finance</option>
@@ -138,7 +140,6 @@ container for the response-feedback (start with alert)
               <label for="input-fax-phone">Fax Phone:</label>
               <input type="text" id="input-fax-phone" placeholder="Fax Number">
 
-
               <label for="input-email">Email:</label>
               <input type="text" id="input-email" placeholder="Email@domain.com">
 
@@ -177,9 +178,9 @@ container for the response-feedback (start with alert)
         </form>
       </div>
 
-      <div class="container-data">
+      <div id="map"></div>
 
-      </div>
+      <div class="container-data"></div>
 
       <div class="container-rolodex">
         <div class="rolodex">
@@ -194,10 +195,30 @@ container for the response-feedback (start with alert)
             <span><i class="large material-icons next">arrow_upward</i></span>
           </div>
         </div>
-        <div class="default-card base"></div>
+        <div class="default-card base">
+          <div class="front">
+            <div class="ribbon"></div>
+          </div>
+          <div class="back"></div>
+        </div>
       </div>
 
     </div>
+    <script type="text/javascript">
+      var map;
+      function initMap() {
+            map = new google.maps.Map(document.getElementById('map'), {
+              center: {lat: -34.397, lng: 150.644},
+              zoom: 8
+            });
+          }
 
+      // create a storage for a sorted array
+      if(!localStorage.getItem('all-data')){
+        localStorage.setItem('all-data', JSON.stringify([]));
+      }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB7m6i_xmH97EjZ--YvjapGCjderp0EtKw&callback=initMap"
+      async defer></script>
   </body>
 </html>
