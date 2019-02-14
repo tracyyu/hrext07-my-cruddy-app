@@ -8,12 +8,6 @@ interact with localstorage
 $(document).ready(function(){
   // this is where we jquery
 
-  // create a storage for a sorted array
-  if(!localStorage.getItem('all-data')){
-    localStorage.setItem('all-data', JSON.stringify([]));
-  }
-
-
   // toggle filter menu
   var toggleMenu = function(){
     var menuOpen = $('.filter-nav .menu-open');
@@ -74,7 +68,7 @@ $(document).ready(function(){
 
   var clearFormFields = function(){
     $('#input-name').val('');
-    $('#input-job-title').val('');
+    $('#input-person-title').val('');
     $('#input-company-name').val('');
     $('#input-company-description').val('');
     $('#input-companu-address').val('');
@@ -97,7 +91,7 @@ $(document).ready(function(){
     var nameData = $('#input-name').val() || '';
     obj['name'] = nameData.trim();
 
-    var jobTItle = $('#input-job-title').val() || '';
+    var jobTItle = $('#input-person-title').val() || '';
     obj['job-title'] = jobTItle.trim()
 
     var companyName = $('#input-company-name').val()|| '';
@@ -106,7 +100,7 @@ $(document).ready(function(){
     var companyDescription = $('#input-company-description').val() || '';
     obj['company-description'] = companyDescription.trim();
 
-    var companyAddress = $('#input-companu-address').val() || '';
+    var companyAddress = $('#input-company-address').val() || '';
     obj['company-address'] = companyAddress.trim();
 
     var workPhone = $('#input-work-phone').val() || '';
@@ -124,19 +118,22 @@ $(document).ready(function(){
     var socialLink = $('#input-social').val() || '';
     obj['social-link'] = socialLink.trim();
 
-    var category = $('#input-category option:selected').val() || '';
+    var category = $('#input-category').val() || '';
     obj['input-category'] = category;
 
     var notes = $('#input-notes').val() || '';
     obj['notes'] = notes.trim();
 
-    // add data into localStorage
-    localStorage.setItem(nameData, JSON.stringify(obj));
-
-    //now add it to the key: all-data
+     //now add it to the key: all-data
     var allData = JSON.parse(localStorage.getItem('all-data'));
-    console.log(allData);
-    allData.push(obj);
+
+    var dataName = nameData.split(' ').join('-');
+    if(!localStorage.getItem(dataName)){
+      allData.push(obj);
+    }
+
+    // add data into localStorage
+    localStorage.setItem(dataName, JSON.stringify(obj));
   
     localStorage.setItem('all-data', JSON.stringify(allData));
 
@@ -145,8 +142,9 @@ $(document).ready(function(){
 
   var createDataSummary = function(dataObj){
     // Summary Card
-    var $summaryDiv = $(`<div class="display-data-summary" data-name="${dataObj['name']}" data-time-created=${dataObj['time-created']} data-time-accessed=${dataObj['time-accessed']}></div>`);
-    var $summaryDataDiv = $(`<p class="data-summary">${dataObj['name']} | ${dataObj['company-name']} <br> ${dataObj['work-phone']}</p>`);
+    var dataName = dataObj['name'].split(' ').join('-');
+    var $summaryDiv = $(`<div class="display-data-summary ${dataName}" data-name="${dataName}" data-time-created=${dataObj['time-created']} data-time-accessed=${dataObj['time-accessed']}></div>`);
+    var $summaryDataDiv = $(`<div class="data-summary"><span>${dataObj['name']}</span><span class="summary-work"><i class="material-icons work">work</i>: ${dataObj['company-name']}</span><span class="summary-company"><i class="material-icons phone">call</i>: ${dataObj['work-phone']}</span></div>`);
     var $editButtons = $('<div class="data-summary-edits"><i class="material-icons edit">create</i> <i class="material-icons delete">clear</i></div>');
 
     $summaryDiv.append($summaryDataDiv, $editButtons);
@@ -156,14 +154,56 @@ $(document).ready(function(){
 
   var createDataCard = function(dataObj){
      // Entire card
-    var $outerDiv = $(`<div class="display-data-item" data-name="${dataObj['name']}" data-time-created=${dataObj['time-created']} data-time-accessed=${dataObj['time-accessed']}></div>`);
+    var dataName = dataObj['name'].split(' ').join('-');
+    var $outerDiv = $(`<div class="display-data-item ${dataName}" data-name="${dataName}" data-time-created=${dataObj['time-created']} data-time-accessed=${dataObj['time-accessed']}></div>`);
     var $cardDiv = $('<div class="display-data-card"></div>');
-    var $personDiv = $(`<div class="card-person"><p class="card-full-name">${dataObj['name']}</p><p class="card-job-title">${dataObj['job-title']}</p></div><hr>`);
-    var $companyDiv = $(`<div class="card-company"><p class="card-company-name">${dataObj['company-name']}</p><p class="card-company-description">${dataObj['company-description']}</p><p class="card-company-address">${dataObj['company-address']}</p></div>`);
-    var $contactDiv = $(`<div class="card-contact"><p class="card-phone"><span>Work: </span> ${dataObj['work-phone']}</p><p class="card-phone"><span>Cell: </span> ${dataObj['personal-phone']}</p><p class="card-phone"><span>Fax: </span> ${dataObj['fax-phone']}</p><p class="card-phone">${dataObj['email']}</p></div>`);
-    var $socialLink = $(`<div class="card-social"><a href=${dataObj['social-link']} class="card-website">${dataObj['social-link']}</a></div>`);
-    var $category = $(`<div class="card-category"><span>Category: </span>${dataObj['input-category']}</div>`);
-    var $notes = $(`<div class="card-notes"><span>Notes: </span>${dataObj['notes']}</div>`);
+    var $personDiv = $(`<div class="card-person">
+                        <p class="card-full-name">${dataObj['name']}</p>
+                        <p class="card-job-title">${dataObj['job-title']}</p>
+                        </div><hr>`);
+    var $companyDiv = $(`<div class="card-company">
+                          <p class="card-company-name">${dataObj['company-name']}</p>
+                          <p class="card-company-description">${dataObj['company-description']}</p>
+                          <p class="card-company-address">
+                            <i class="material-icons">map</i> Address: <span class="address-input">${dataObj['company-address']}</span>
+                            <div class="open-map">Map</div>
+                          </p>
+                        </div>`);
+    var $contactDiv = $(`<div class="card-contact">
+                            <p class="card-phone">
+                              <span>
+                                <i class="material-icons">local_phone</i> Work: 
+                              </span>
+                              <span class="work-phone-input">${dataObj['work-phone']}</span>
+                            </p>
+                            <p class="card-phone">
+                              <span><i class="material-icons">phone_iphone</i> Cell: 
+                              </span>
+                              <span class="personal-phone-input">${dataObj['personal-phone']}</span>
+                            </p>
+                            <p class="card-phone">
+                              <span><i class="material-icons">local_printshop</i> Fax: 
+                              </span>
+                              <span class="fax-phone-input">${dataObj['fax-phone']}</span>
+                            </p>
+                            <p class="card-phone">
+                              <i class="material-icons">email</i> Email: 
+                              <span class="email-input">${dataObj['email']}</span>
+                            </p>
+                          </div>`);
+    var $socialLink = $(`<div class="card-social">
+                          <a href=${dataObj['social-link']} class="card-website">
+                            ${dataObj['social-link']}
+                          </a>
+                        </div>`);
+    var $category = $(`<div class="card-category">
+                        <span>Category: </span>
+                        <span class="category-input">${dataObj['input-category']}</span>
+                      </div>`);
+    var $notes = $(`<div class="card-notes">
+                      <span>Notes: </span>
+                      <span class="notes-input">${dataObj['notes']}</span>
+                    </div>`);
 
     $cardDiv.append($personDiv, $companyDiv, $contactDiv, $socialLink, $category, $notes);
     $outerDiv.append($cardDiv);
@@ -185,8 +225,9 @@ $(document).ready(function(){
 
   var createRolodexCard = function(dataObj, i){
     //Entire rolodex card
+    var dataName = dataObj['name'].split(' ').join('-');
     var length = localStorage.length;
-    var $defaultCardDiv = $(`<div class="default-card" id="card-${i}" data-name="${dataObj['name']}" data-time-created=${dataObj['time-created']} data-time-accessed=${dataObj['time-accessed']}></div>`);
+    var $defaultCardDiv = $(`<div class="default-card ${dataName}" id="card-${i}" data-name="${dataName}" data-time-created=${dataObj['time-created']} data-time-accessed=${dataObj['time-accessed']}></div>`);
     var $backCardDiv = $('<div class="back"></div>');
     var $frontCardDiv = $('<div class="front"></div>');
     var $ribbonCardDiv = $('<div class="ribbon"></div>');
@@ -214,8 +255,66 @@ $(document).ready(function(){
   var filterData = function(filterType){
     // filter by category
     var allData = JSON.parse(localStorage.getItem('all-data'));
+    return allData.filter((item) =>{
+      return ( item['input-category'] === filterType || item['input-category'] === '' );
+    });
 
   };
+
+  var searchKeyword = function(str) {
+    // Declare variables
+
+    var input = $('#search_bar');
+    // var filter = (input.text()).toLowerCase();
+    var filter = str.toLowerCase();
+    var listData = $(".container-data");
+    var rolodexData = $(".default-card");
+    var dataSummary = $(".display-data-summary");
+    var dataItem = $(".display-data-item");
+
+    // Loop through all list items, and hide those who don't match the search query
+    for (i = 0; i < dataSummary.length; i++) {
+
+      // search through all data fields and return data summary that contains it
+        var cardFullName = $(dataItem[i]).find('.card-full-name').text().toLowerCase();
+        var cardJobTitle = $(dataItem[i]).find('.card-job-title').text().toLowerCase();     
+        var cardCompanyName = $(dataItem[i]).find('.card-company-name').text().toLowerCase();
+        var cardCompanyDescription = $(dataItem[i]).find('.card-company-description').text().toLowerCase();
+        var cardCompanyAddress = $(dataItem[i]).find('.address-input').text().toLowerCase();
+        var cardWorkPhone = $(dataItem[i]).find('.work-phone-input').text().toLowerCase();
+        var cardPersonalPhone = $(dataItem[i]).find('.personal-phone-input').text().toLowerCase();
+        var cardFaxPhone = $(dataItem[i]).find('.fax-phone-input').text().toLowerCase();
+        var cardEmail = $(dataItem[i]).find('.email-input').text().toLowerCase();
+        var cardSocial = $(dataItem[i]).find('card-website').text().toLowerCase();
+        var cardCategory = $(dataItem[i]).find('.category-input').text().toLowerCase();
+        var cardNotes = $(dataItem[i]).find('.notes-input').text().toLowerCase();
+
+      if(cardFullName.includes(filter) || 
+          cardJobTitle.includes(filter) ||
+          cardCompanyName.includes(filter) ||
+          cardCompanyDescription.includes(filter) ||
+          cardCompanyAddress.includes(filter) ||
+          cardWorkPhone.includes(filter) ||
+          cardPersonalPhone.includes(filter) ||
+          cardFaxPhone.includes(filter) ||
+          cardEmail.includes(filter) ||
+          cardSocial.includes(filter) ||
+          cardCategory.includes(filter) ||
+          cardNotes.includes(filter)
+        ){
+        $(dataSummary[i]).css('display', '');
+        $(rolodexData[i]).css('display', 'block');
+      }else{
+        $(dataSummary[i]).css('display', "none");
+        $(`#card-${i+1}`).css('display', 'none');
+      }
+    }
+  };
+
+  $('#search_bar').on('keyup', function(e){
+    e.preventDefault();
+    searchKeyword(e.currentTarget.value);
+  });
 
   var sortData = function(sortType){
     var allData = JSON.parse(localStorage.getItem('all-data'));
@@ -315,7 +414,7 @@ $(document).ready(function(){
       createDataSummary(dataObj);
 
       // Entire card
-      createDataCard(dataObj);
+      addDataCard(dataObj);
 
       // Add to rolodex 
       createRolodexCard(dataObj, localStorage.length);
@@ -331,13 +430,11 @@ $(document).ready(function(){
   // update db
   $('.container-data').on('click', '.data-summary-edits .edit', function(e){
     var keyData = e.target.parentElement.parentElement.dataset.name;
-    console.log(keyData);
 
     var $form = $('.container-form');
     toggleDisplay($form);
 
     var obj = JSON.parse(localStorage.getItem(keyData));
-    console.log(obj);
 
     $('#input-name').val(obj['name']);
     $('#input-job-title').val(obj['job-title']);
@@ -349,7 +446,7 @@ $(document).ready(function(){
     $('#input-fax-phone').val(obj['fax-phone']);
     $('#input-email').val(obj['email']);
     $('#input-social').val(obj['social-link']);
-    $('#input-category option:selected').val(obj['input-category']);
+    $('#input-category').val(obj['input-category']);
     $('#input-notes').val(obj['notes']);
 
     $('.btn-update').css('display', 'inline-block');
@@ -361,7 +458,15 @@ $(document).ready(function(){
   $('.container-data').on('click', '.delete', function(e){
     console.log(e);
     var keyData = e.target.parentElement.parentElement.dataset.name;
+    console.log(keyData);
     localStorage.removeItem(keyData);
+    var allDataArr = JSON.parse(localStorage.getItem('all-data'));
+
+    let ind = allDataArr.find((obj,ind) => {
+      obj['name'] === keyData.split('-').join(' ');
+    });
+    allDataArr.splice(ind,1);
+    localStorage.setItem('all-data', JSON.stringify(allDataArr));
     // remove Summary div
     //e.target.parentElement.parentElement.remove();
     // must also remove card div
@@ -375,25 +480,65 @@ $(document).ready(function(){
 
     var keyData = e.target.parentElement.parentElement.dataset.name;
 
+    // must delete from local Storage if change name and dataset values
+
     var updatedObj = createUpdateObj();
+    var name = updatedObj['name'].split(' ').join('-');
 
-    // Changes to summary
-    $('.data-summary').find(`[data-name=${keyData}]`).html(`<span>${updatedObj['name']} | ${updatedObj['company-name']} <br> ${updatedObj['work-phone']}</span>`);
-    $('.data-summary').find(`[data-name=${keyData}]`).css('display', 'block');
+    console.log(name);
 
-    // Changes to card
-    $('display-data-item').find(`[data-name=${keyData}]`).find('.card-full-name').val(updatedObj['name']);
-    $('display-data-item').find(`[data-name=${keyData}]`).find('.card-job-title').val(updatedObj['job-title']);
-    $('display-data-item').find(`[data-name=${keyData}]`).find('.card-company-name').val(updatedObj['company-name']);
-    $('display-data-item').find(`[data-name=${keyData}]`).find('.card-company-description').val(updatedObj['company-description']);
-    $('display-data-item').find(`[data-name=${keyData}]`).find('.card-company-address').val(updatedObj['company-address']);
-    $('display-data-item').find(`[data-name=${keyData}]`).find('.card-work-phone').val(updatedObj['work-phone']);
-    $('display-data-item').find(`[data-name=${keyData}]`).find('.card-personal-phone').val(updatedObj['personal-phone']);
-    $('display-data-item').find(`[data-name=${keyData}]`).find('.card-fax-phone').val(updatedObj['fax-phone']);
-    $('display-data-item').find(`[data-name=${keyData}]`).find('.card-email').val(updatedObj['email']);
-    $('display-data-item').find(`[data-name=${keyData}]`).find('.card-social').val(updatedObj['social-link']);
-    $('display-data-item').find(`[data-name=${keyData}]`).find('.card-category option:selected').val(updatedObj['input-category']);
-    $('display-data-item').find(`[data-name=${keyData}]`).find('.card-notes').val(updatedObj['notes']);
+    $.each($(`.${name}`), (i, item) => {
+      console.log(item);
+    
+      // Changes to summary
+      var dataSummary = $(item).find('.data-summary');
+      if(dataSummary.length){
+
+        $(item).find('.data-summary').html(`<span>${updatedObj['name']}</span><span class="summary-work"><i class="material-icons work">work</i>: ${updatedObj['company-name']}</span><span class="summary-company"><i class="material-icons phone">call</i>: ${updatedObj['work-phone']}</span>`);
+        $(item).find('.data-summary').css('display', 'block');
+      }
+
+      var card = $(item).find('.display-data-card');
+      if(card.length){
+        console.log('fix');
+      // Changes to card
+        var cardFullName = $(item).find('.card-full-name');
+        cardFullName.text(updatedObj['name']);
+
+        var cardJobTitle = $(item).find('.card-job-title');     
+        cardJobTitle.text(updatedObj['job-title']);
+
+        var cardCompanyName = $(item).find('.card-company-name');
+        cardCompanyName.text(updatedObj['company-name']);
+
+        var cardCompanyDescription = $(item).find('.card-company-description');
+        cardCompanyDescription.text(updatedObj['company-description']);
+
+        var cardCompanyAddress = $(item).find('.card-company-address');
+        cardCompanyAddress.text(updatedObj['company-address']);
+
+        var cardWorkPhone = $(item).find('.card-work-phone');
+        cardWorkPhone.text(updatedObj['work-phone']);
+
+        var cardPersonalPhone = $(item).find('.personal-phone-input');
+        cardPersonalPhone.text(updatedObj['personal-phone']);
+
+        var cardFaxPhone = $(item).find('.fax-phone-input');
+        cardFaxPhone.text(updatedObj['fax-phone']);
+
+        var cardEmail = $(item).find('.email-input');
+        cardEmail.text(updatedObj['email']);
+
+        var cardSocial = $(item).find('.card-social');
+        cardSocial.text(updatedObj['social-link']);
+
+        var cardCategory = $(item).find('.card-category');
+        cardCategory.text(updatedObj['input-category']);
+
+        var cardNotes = $(item).find('.card-notes');
+        cardNotes.text(updatedObj['notes']);
+      }
+    });
 
     clearFormFields();
 
@@ -419,8 +564,12 @@ $(document).ready(function(){
     e.preventDefault();
 
     var sortValue = $('input[name=radio]:checked').val();
-
-    let sortedData = sortData(sortValue);
+    var categoryFilterValue = $('#filter-category').val();
+    var distanceFilterValue = $('.checkbox-distance input[type="checkbox"]:checked');
+    var arr = [...distanceFilterValue, categoryFilterValue];
+  
+    let filteredData = filterData(categoryFilterValue);
+    let sortedData = sortData(filteredData);
     $('.container-data').empty();
     displayAllData(sortedData);
 
@@ -450,7 +599,7 @@ $(document).ready(function(){
   // Rotate: 12deg to -135deg.
   setNextPrev();
   $('#card-' + showing).show().css({zIndex: '2'});
-  $('#card-' + prev).css({ zIndex: '1', transform: 'perspective(1500px) rotateX(-120deg)' }).show();
+  $('#card-' + prev).css({ zIndex: '1', transform: 'perspective(1500px) rotateX(0deg)' }).show();
   
   $('#prev-controller').click(function() {
     showing--;
@@ -469,7 +618,7 @@ $(document).ready(function(){
         complete: function() {
           $(this)
             .css({ zIndex: '0' });
-          $('#card-' + next).css({zIndex: '0'}).hide();
+          $('#card-' + next).css({zIndex: '0'}).show();
         }
       });
   });
