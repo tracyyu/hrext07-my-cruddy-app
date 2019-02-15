@@ -258,7 +258,7 @@ $(document).ready(function(){
     // filter by category
     var allData = JSON.parse(localStorage.getItem('all-data'));
     return allData.filter((item) =>{
-      return ( item['input-category'] === filterType || item['input-category'] === '' );
+      return ( item['input-category'] === filterType || filterType === '' );
     });
 
   };
@@ -318,29 +318,29 @@ $(document).ready(function(){
     searchKeyword(e.currentTarget.value);
   });
 
-  var sortData = function(sortType){
+  var sortData = function(sortType, dataArr){
     var allData = JSON.parse(localStorage.getItem('all-data'));
     // sort alphabetically by name ascending order
     // sort by company name by ascending order
     // sort by time created
     if(sortType === 'name'){
-      return allData.sort(function(a, b){
+      return dataArr.sort(function(a, b){
         if(a['name'].toLowerCase() < b['name'].toLowerCase()) { return -1; }
         if(a['name'].toLowerCase() > b['name'].toLowerCase()) { return 1; }
         return 0;
       });
     }else if(sortType === 'company'){
-      return allData.sort(function(a, b){
+      return dataArr.sort(function(a, b){
         if(a['company-name'].toLowerCase() < b['company-name'].toLowerCase()) { return -1; }
         if(a['company-name'].toLowerCase() > b['company-name'].toLowerCase()) { return 1; }
         return 0;
       });
     }else if(sortType === 'recently-added'){
-      return allData.sort(function(a, b){
+      return dataArr.sort(function(a, b){
         return a['time-created'] - b['time-created'];
       });
     }else{
-      return allData;
+      return dataArr;
     }
   }
 
@@ -613,7 +613,8 @@ $(document).ready(function(){
     var arr = [...distanceFilterValue, categoryFilterValue];
   
     let filteredData = filterData(categoryFilterValue);
-    let sortedData = sortData(filteredData);
+    console.log(filteredData);
+    let sortedData = sortData(sortValue, filteredData);
     $('.container-data').empty();
     displayAllData(sortedData);
 
