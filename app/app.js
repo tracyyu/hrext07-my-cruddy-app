@@ -428,10 +428,16 @@ $(document).ready(function(){
 
   });
 
+  var prevName;
+
 
   // update db
   $('.container-data').on('click', '.data-summary-edits .edit', function(e){
     var keyData = e.target.parentElement.parentElement.dataset.name;
+
+    prevName = keyData;
+
+    console.log(prevName);
 
     var $form = $('.container-form');
     toggleDisplay($form);
@@ -480,78 +486,108 @@ $(document).ready(function(){
   $('.btn-update').on('click',function(e){
     e.preventDefault();
 
-    var keyData = e.target.parentElement.parentElement.dataset.name;
-
     // must delete from local Storage if change name and dataset values
+    var name = $('#input-name').val() || '';
 
-    var updatedObj = createUpdateObj();
-    var name = updatedObj['name'].split(' ').join('-');
+    if(prevName !== name){
+      // delete the old data
+      localStorage.removeItem(prevName);
+      var allDataArr = JSON.parse(localStorage.getItem('all-data'));
 
-    $.each($(`.${name}`), (i, item) => {
+      let ind = allDataArr.find((obj,ind) => {
+        obj['name'] === prevName;
+      });
+      allDataArr.splice(ind,1);
+      localStorage.setItem('all-data', JSON.stringify(allDataArr));
 
-      // Changes to summary
-      var dataSummary = $(item).find('.data-summary');
-      if(dataSummary.length){
+      $(`[data-name=${prevName}]`).remove();
 
-        $(item).find('.data-summary').html(`<span>${updatedObj['name']}</span><span class="summary-work"><i class="material-icons work">work</i>: ${updatedObj['company-name']}</span><span class="summary-company"><i class="material-icons phone">call</i>: ${updatedObj['work-phone']}</span>`);
-        $(item).find('.data-summary').css('display', 'block');
-      }
+      var updatedObj = createUpdateObj();
+      // Summary Card
+      createDataSummary(updatedObj);
 
-      var card = $(item).find('.display-data-card');
-      if(card.length){
-      // Changes to card
-        var cardFullName = $(item).find('.card-full-name');
-        cardFullName.text(updatedObj['name']);
+      // Entire card
+      addDataCard(updatedObj);
 
-        var cardJobTitle = $(item).find('.card-job-title');     
-        cardJobTitle.text(updatedObj['job-title']);
+      // Add to rolodex 
+      createRolodexCard(updatedObj, localStorage.length);
 
-        var cardCompanyName = $(item).find('.card-company-name');
-        cardCompanyName.text(updatedObj['company-name']);
+      clearFormFields();
 
-        var cardCompanyDescription = $(item).find('.card-company-description');
-        cardCompanyDescription.text(updatedObj['company-description']);
+      var $form = $('.container-form');
+      toggleDisplay($form);
 
-        var cardCompanyAddress = $(item).find('.address-input');
-        cardCompanyAddress.text(updatedObj['company-address']);
+      $('.container-form').css('display', 'none')    
+    }else{
 
-        var cardWorkPhone = $(item).find('.card-work-phone');
-        cardWorkPhone.text(updatedObj['work-phone']);
+      var updatedObj = createUpdateObj();
+      var name = updatedObj['name'].split(' ').join('-');
 
-        var cardPersonalPhone = $(item).find('.personal-phone-input');
-        cardPersonalPhone.text(updatedObj['personal-phone']);
+      $.each($(`.${name}`), (i, item) => {
 
-        var cardFaxPhone = $(item).find('.fax-phone-input');
-        cardFaxPhone.text(updatedObj['fax-phone']);
+        // Changes to summary
+        var dataSummary = $(item).find('.data-summary');
+        if(dataSummary.length){
 
-        var cardEmail = $(item).find('.email-input');
-        cardEmail.text(updatedObj['email']);
+          $(item).find('.data-summary').html(`<span>${updatedObj['name']}</span><span class="summary-work"><i class="material-icons work">work</i>: ${updatedObj['company-name']}</span><span class="summary-company"><i class="material-icons phone">call</i>: ${updatedObj['work-phone']}</span>`);
+          $(item).find('.data-summary').css('display', 'block');
+        }
 
-        var cardSocial = $(item).find('.card-social');
-        cardSocial.text(updatedObj['social-link']);
+        var card = $(item).find('.display-data-card');
+        if(card.length){
+        // Changes to card
+          var cardFullName = $(item).find('.card-full-name');
+          cardFullName.text(updatedObj['name']);
 
-        var cardCategory = $(item).find('.card-category');
-        cardCategory.text(updatedObj['input-category']);
+          var cardJobTitle = $(item).find('.card-job-title');     
+          cardJobTitle.text(updatedObj['job-title']);
 
-        var cardNotes = $(item).find('.card-notes');
-        cardNotes.text(updatedObj['notes']);
-      }
-    });
+          var cardCompanyName = $(item).find('.card-company-name');
+          cardCompanyName.text(updatedObj['company-name']);
 
+          var cardCompanyDescription = $(item).find('.card-company-description');
+          cardCompanyDescription.text(updatedObj['company-description']);
 
-    // replace the data in the 'all-data array'
-    var allDataArr = JSON.parse(localStorage.getItem('all-data'));
+          var cardCompanyAddress = $(item).find('.address-input');
+          cardCompanyAddress.text(updatedObj['company-address']);
 
-    let ind = allDataArr.find((obj,ind) => {
-      obj['name'] === name;
-    });
-    allDataArr.splice(ind,1, updatedObj);
-    localStorage.setItem('all-data', JSON.stringify(allDataArr));
+          var cardWorkPhone = $(item).find('.card-work-phone');
+          cardWorkPhone.text(updatedObj['work-phone']);
 
-    clearFormFields();
+          var cardPersonalPhone = $(item).find('.personal-phone-input');
+          cardPersonalPhone.text(updatedObj['personal-phone']);
 
-    var $form = $('.container-form');
-    toggleDisplay($form);
+          var cardFaxPhone = $(item).find('.fax-phone-input');
+          cardFaxPhone.text(updatedObj['fax-phone']);
+
+          var cardEmail = $(item).find('.email-input');
+          cardEmail.text(updatedObj['email']);
+
+          var cardSocial = $(item).find('.card-social');
+          cardSocial.text(updatedObj['social-link']);
+
+          var cardCategory = $(item).find('.card-category');
+          cardCategory.text(updatedObj['input-category']);
+
+          var cardNotes = $(item).find('.card-notes');
+          cardNotes.text(updatedObj['notes']);
+        }
+      });
+
+      // replace the data in the 'all-data array'
+      var allDataArr = JSON.parse(localStorage.getItem('all-data'));
+
+      let ind = allDataArr.find((obj,ind) => {
+        obj['name'] === name;
+      });
+      allDataArr.splice(ind,1, updatedObj);
+      localStorage.setItem('all-data', JSON.stringify(allDataArr));
+
+      clearFormFields();
+
+      var $form = $('.container-form');
+      toggleDisplay($form);
+    }
 
   })
 
