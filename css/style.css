@@ -1,5 +1,6 @@
 body{
 	width: 100%;
+	min-width: 950px;
 	height: 100%;
 	min-height:100%;
 	margin: 0px;
@@ -15,6 +16,7 @@ html{
   margin: 0px;
   padding: 0px;
   width: 100%;
+  min-width: 950px;
   height: 100%;
   top: 0;
   bottom: 0;
@@ -114,6 +116,7 @@ input[type=text]:focus, textarea:focus{
 
 .outer-container{
 	width: 100%;
+	min-width: 950px;
 	height: 100%;
 	margin: 0px;
 	padding: 0px;
@@ -549,6 +552,7 @@ input[type=text]:focus, textarea:focus{
 	position: absolute;
 	color: black;
 	width: 100%;
+	min-width: 950px;
 	height: 100%;
 	max-height: 0;
 	margin: 0px;
@@ -614,7 +618,20 @@ input[type=text]:focus, textarea:focus{
 	display: none;
   	justify-content: center;
   	align-items: center;
-  	z-index: 5;
+  	z-index: 200;
+}
+
+@media only screen and (max-width: 1050px){
+
+	form{
+		max-width: 40%;
+		max-height: 38%;
+		left: 0;
+ 		right: 0;
+		margin: auto;
+		left: calc(50%-200px);
+		z-index: 200;
+	}
 }
 
 .business-card-info{
@@ -708,6 +725,7 @@ input.invalid, textarea.invalid{
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 500;
 }
 
 .right-label, .left-label {
