@@ -9,6 +9,7 @@
           integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
           crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore-min.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script src="app/app.js"></script>
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <link rel="stylesheet" type="text/css" href="reset.css">
@@ -178,7 +179,10 @@ container for the response-feedback (start with alert)
         </form>
       </div>
 
-      <div id="map"></div>
+      <div class="map-container">
+        <div class="map-close"><i class="material-icons close">clear</i></div>
+        <div id="map"></div>
+      </div>
 
       <div class="container-data"></div>
 
@@ -209,7 +213,7 @@ container for the response-feedback (start with alert)
       function initMap() {
             map = new google.maps.Map(document.getElementById('map'), {
               center: {lat: -34.397, lng: 150.644},
-              zoom: 8
+              zoom: 12
             });
           }
 

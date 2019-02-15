@@ -33,11 +33,13 @@ $(document).ready(function(){
   // toggle between list and rolodex display
   $('.toggle-switch').on('change', function(){
     var isChecked = $(this).is(':checked');
+    $('.map-container').css('display', 'none');
     if(!isChecked){
       // will display list
       console.log($('.toggle-switch')[0].dataset['list']);
       $('.container-data').css('display', 'block');
       $('.container-rolodex').css('display', 'none');
+      $('.container-data').css({transform: 'translateX(0px) translateY(0px)'});
     }else{
       // will display rolodex
       console.log($('.toggle-switch')[0].dataset['rolodex']);
@@ -166,27 +168,27 @@ $(document).ready(function(){
                           <p class="card-company-description">${dataObj['company-description']}</p>
                           <p class="card-company-address">
                             <i class="material-icons">map</i> Address: <span class="address-input">${dataObj['company-address']}</span>
-                            <div class="open-map">Map</div>
                           </p>
+                          <div class="open-map">Map</div>
                         </div>`);
     var $contactDiv = $(`<div class="card-contact">
-                            <p class="card-phone">
+                            <p class="card-phone1">
                               <span>
                                 <i class="material-icons">local_phone</i> Work: 
                               </span>
                               <span class="work-phone-input">${dataObj['work-phone']}</span>
                             </p>
-                            <p class="card-phone">
+                            <p class="card-phone2">
                               <span><i class="material-icons">phone_iphone</i> Cell: 
                               </span>
                               <span class="personal-phone-input">${dataObj['personal-phone']}</span>
                             </p>
-                            <p class="card-phone">
+                            <p class="card-phone1">
                               <span><i class="material-icons">local_printshop</i> Fax: 
                               </span>
                               <span class="fax-phone-input">${dataObj['fax-phone']}</span>
                             </p>
-                            <p class="card-phone">
+                            <p class="card-phone2">
                               <i class="material-icons">email</i> Email: 
                               <span class="email-input">${dataObj['email']}</span>
                             </p>
@@ -475,7 +477,7 @@ $(document).ready(function(){
   });
 
   // update item through the form
-  $('.btn-update').click(function(e){
+  $('.btn-update').on('click',function(e){
     e.preventDefault();
 
     var keyData = e.target.parentElement.parentElement.dataset.name;
@@ -485,11 +487,8 @@ $(document).ready(function(){
     var updatedObj = createUpdateObj();
     var name = updatedObj['name'].split(' ').join('-');
 
-    console.log(name);
-
     $.each($(`.${name}`), (i, item) => {
-      console.log(item);
-    
+
       // Changes to summary
       var dataSummary = $(item).find('.data-summary');
       if(dataSummary.length){
@@ -500,7 +499,6 @@ $(document).ready(function(){
 
       var card = $(item).find('.display-data-card');
       if(card.length){
-        console.log('fix');
       // Changes to card
         var cardFullName = $(item).find('.card-full-name');
         cardFullName.text(updatedObj['name']);
@@ -514,7 +512,7 @@ $(document).ready(function(){
         var cardCompanyDescription = $(item).find('.card-company-description');
         cardCompanyDescription.text(updatedObj['company-description']);
 
-        var cardCompanyAddress = $(item).find('.card-company-address');
+        var cardCompanyAddress = $(item).find('.address-input');
         cardCompanyAddress.text(updatedObj['company-address']);
 
         var cardWorkPhone = $(item).find('.card-work-phone');
@@ -540,6 +538,16 @@ $(document).ready(function(){
       }
     });
 
+
+    // replace the data in the 'all-data array'
+    var allDataArr = JSON.parse(localStorage.getItem('all-data'));
+
+    let ind = allDataArr.find((obj,ind) => {
+      obj['name'] === name;
+    });
+    allDataArr.splice(ind,1, updatedObj);
+    localStorage.setItem('all-data', JSON.stringify(allDataArr));
+
     clearFormFields();
 
     var $form = $('.container-form');
@@ -548,7 +556,7 @@ $(document).ready(function(){
   })
 
   // Clear Form 
-  $('.btn-clear').click(function(){
+  $('.btn-clear').on('click',function(){
     clearFormFields();
   });
 
@@ -601,7 +609,7 @@ $(document).ready(function(){
   $('#card-' + showing).show().css({zIndex: '2'});
   $('#card-' + prev).css({ zIndex: '1', transform: 'perspective(1500px) rotateX(0deg)' }).show();
   
-  $('#prev-controller').click(function() {
+  $('#prev-controller').on('click',function() {
     showing--;
     if (showing == 0)
       showing = total-1;
@@ -623,7 +631,7 @@ $(document).ready(function(){
       });
   });
   
-  $('#next-controller').click(function() {
+  $('#next-controller').on('click',function() {
     setNextPrev();
     
     $('#card-' + next).css({zIndex: '1', transform: 'perspective(1500px) rotateX(0deg)'}).show();
@@ -644,26 +652,26 @@ $(document).ready(function(){
       });
   });
   
-  $('#port-prev').click(function() {
+  $('#port-prev').on('click',function() {
     $('#portfolio-imgs').css({marginLeft: '0%'});
     
     $(this).hide(500);
     $('#port-next').show(500);
   });
   
-  $('#port-next').click(function() {
+  $('#port-next').on('click',function() {
     $('#portfolio-imgs').css({marginLeft: '-100%'});
     
     $(this).hide(500);
     $('#port-prev').show(500);
   });
   
-  $('.default-card').click(function(event) {
+  $('.default-card').on('click',function(event) {
     event.stopPropagation();
   });
   
   var selected;
-  $('.base').click(function() {
+  $('.base').on('click',function() {
     selected = $('#card-' + showing);
     
     selected
@@ -683,7 +691,7 @@ $(document).ready(function(){
       });
   });
   
-  $('body').click(function() {
+  $('body').on('click',function() {
     if( isShowing ) {
       selected
         .animate(
@@ -707,7 +715,61 @@ $(document).ready(function(){
           });
     }
   });
+
+
+/******************************************/
+/*                MAP                     */
+/******************************************/
+
+
+  var geocode = function(location){
+
+    //var location = '22 Main st, Boston, MA, 02124';
+
+    axios.get('https://maps.googleapis.com/maps/api/geocode/json',{
+      params:{
+        address: location,
+        key: 'AIzaSyB7m6i_xmH97EjZ--YvjapGCjderp0EtKw'
+      }
+    })
+    .then(function(response){
+      console.log(response.data.results[0].geometry.location);
+      var latlong = response.data.results[0].geometry.location;
+      addMarker(latlong);
+    }).catch(function(error){
+      console.log(error);
+    });
+  }
+
+  // Function for adding a marker to the page.
+  var addMarker = function(location) {
+      var marker = new google.maps.Marker({
+          position: location,
+          map: map
+      });
+      map.setCenter(new google.maps.LatLng(location));
+  }
+
+  $('.container-data').on('click', '.open-map', function(e){
+    $('.map-container').css('display', 'block'); 
+    $('.container-data').css({transform: 'translateX(-200px) translateY(80px)'});
+    geocode($(e.target.previousElementSibling)[0].innerText);
+  });
+
+   $('.container-rolodex').on('click', '.default-card .open-map' , function(){
+    $('.map-container').css('display', 'block'); 
+    $('.container-rolodex').css({transform: 'translateX(-200px) translateY(80px)'}); 
+  });
+
+  $('.map-container').on('click', '.map-close', function(e){
+    $('.map-container').css('display', 'none');
+    $('.container-data').css({transform: 'translateX(0px) translateY(0px)'}); 
+  });
+
+
 });
+
+
 
 
   //var keyData = 'ourKey'; // going to need to make this dynamic?
